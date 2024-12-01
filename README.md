@@ -4,17 +4,20 @@
 
 Imagine that no one has invented spreadsheets yet, not even the concept of tabular data is really used. Then someone invents the csv format and makes it easy to edit and process it using an app like Excel. Would it be challenging to describe this to someone? I think it would be, and this is the same challenge I face when I try to describe the idea below.
 
-The tl;dr version of the idea is: it's a format to store any data in a hierarchical and typed way, but also in free form while being human readable and editable. It's also an app to make this interactive and conveniently edit this data, and to query, process, and visualize it.
+**tl;dr:** This is a format to store any data in a hierarchical, typed, yet freeform, human-readable, and editable way. The planned accompanying app allows for interactive editing, querying, processing, and visualization.
 
 I have a huge document about this idea, what problems it solves, for whom it's useful, what are the use cases and key benefits, etc. But it's too long and too much to digest, so I'll try to skip most of it and focus on the core idea. 
 
 ## The core idea
 
-It has 3 parts: expressive language for describing data and their relationships, a server that processes this into a queryable graph database, and a client application that makes it all accessible.
+It has 3 parts: 
+- expressive language for describing data and their relationships
+- a server that processes this into a queryable graph database
+- a client application that makes it all accessible and interactive
 
 ### The language
 
-It's designed to not conflict with markdown, so any markdown file can be extended with data in this format. It's also fairly simple I think, so simple in fact that I probably don't even need explanation just an example.
+The syntax doesn’t conflict with Markdown, so any markdown file can be extended with data in this format. It's also fairly simple I think, so simple in fact that I probably don't even need explanation just an example.
 
 ```markdown
 # My Todo list
@@ -37,23 +40,23 @@ I can have any content around or even inside the graph data.
 ```
 #### Explanation
 
-The "Todo" in parentheses is a start of a graph, it's essentially a root typed node with the @Todo ID. 
+The `Todo` in parentheses is a start of a graph, it's essentially a root typed node with the @Todo ID. 
 
-"has" and "is" are edges (verbs) and they have a direction (the graph is directed and can also be cyclic).
+`has` and `is` are edges (verbs) and they have a direction (the graph is directed and can also be cyclic).
 
-"task", "state", and "date" are types for the nodes, just like the verbs they can be anything.
+`task`, `state`, and `date` are types for the nodes, just like the verbs they can be anything.
 
-"Buy cat food", "Pending" are node IDs, they have to be unique but they can have actual content. So "Buy cat food" is actually just short for @Buy_cat_food = { value: "Buy cat food" }.
+`Buy cat food`, `Pending` are node IDs, they have to be unique but they can have actual content. So `Buy cat food` is actually just short for @Buy_cat_food = { value: "Buy cat food" }.
 
-Indentation and arrows define the hierarchy. For example, "Buy cat food" is a child of "Todo". Similarly, "John Doe" is assigned to a task, and that task is also linked back to him.
+Indentation and arrows represent hierarchy and relationships. For example, `Buy cat food` is a child of `Todo`. Similarly, `John Doe` is assigned to a task, and that task is also linked back to him.
 
-The content in that fenced block is just for that one specific "Some other task" node. It is possible to have all kinds of data, views, and scripts in a similar way not just for each node but for every node in a given type. 
+The content in that fenced block is just for that one specific `Some other task` node. It is possible to have all kinds of data, views, and scripts in a similar way not just for each node but for every node in a given type. 
 
 The language has many more features, like query syntax, special nodes, json properties for nodes, syntax to use it inline, etc.
 
 ### The server
 
-Even without additional processing, the above format provides immediate value in my opinoin. I mean, it's not yet processed in any way, but it's already useful because it's obvious at a glance what it is about, LLMs can understand it perfectly, an editor like VSCode especially with Copilot can autocomplete and manipulate it, the syntax allows us to search for specifics (for example searching for `task:` will find all the tasks), etc. 
+Even without additional processing, the above format provides immediate value in my opinoin. I mean, it's not yet processed in any way, but it's already useful because it's obvious at a glance what it is about, LLMs can understand it perfectly, an editor like VSCode especially with Copilot can autocomplete and manipulate it, the syntax allows us to search for specifics (for example searching for "task:" will find all the tasks), etc. 
 
 But the server is where the magic happens, it transforms this human-readable format into a queryable graph database and serves it to the client (any client). Also it will eventually work as a linter, formatter, etc.
 
@@ -69,9 +72,9 @@ The client will be a browser based app with so many features I'm not even sure w
 
 First of all, obviously it will have autocomplete features, syntax highlighting, and all kinds of editor features so even though we can use any verb, type, and in general any structure, we don't have to remember what we used before, we can just start typing and it will suggest the rest.   
 
-For example, the "state" typed node with "Pending" value is nothing special, it could be anything, it could be "completed" typed node with "false" value for example. It has no meaning in itself, but because this app will suggest the verbs, types, and nodes we used before in a similar context, the graph can act as a schema. Also, verbs and types together with the connected node types allows us and for an LLM to infer everything about the data.
+For example, the `state` typed node with `Pending` value is nothing special, it could be anything, it could be `completed` typed node with `false` value for example. It has no meaning in itself, but because this app will suggest the verbs, types, and nodes we used before in a similar context, the graph can act as a schema. Also, verbs and types together with the connected node types allows us and for an LLM to infer everything about the data.
 
-Let's say we add another task with this app to our Todo graph, as soon as we start a new line under Todo, it will suggest "-- has -> task: ", then we can write the name of the task and after new line and tab it will suggest "-- is -> state: Pending" and "-- is -> state: Done" both. Essentially, writing any kind of data once will make it easy to write it again following the same structure, it's like automatic forms.
+Let's say we add another task with this app to our Todo graph, as soon as we start a new line under Todo, it will suggest `-- has -> task: `, then we can write the name of the task and after new line and tab it will suggest `-- is -> state: Pending` and `-- is -> state: Done` both. Essentially, writing any kind of data once will make it easy to write it again following the same structure, it's like automatic forms.
 
 This whole document is a short version of another. I can't mention everything here, you have to think about it. For example I could mention that because the graph syntax is simple, an LLM can write it for us - we can just copy-paste a work email and AI can just create a task for it. There are all kinds of similar possibilities. 
 
@@ -81,14 +84,14 @@ The client app is not just a text editor. It will have the ability for example t
 
 Because the data is graph, we don't need separate dependency graphs and our data can easily cascade. This allows us to define views for any node or node type and to combine them in connected nodes.
 
-What this means for example is that we can define a view for "date" typed nodes:  
+What this means for example is that we can define a view for `date` typed nodes:  
 `{new Date(value).toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`  
-and when we are in view mode, we can see "Tuesday 10 December 2024" instead of "2024-12-10" for the task due date.  
+and when we are in view mode, we can see `Tuesday 10 December 2024` instead of `2024-12-10` for the task due date.  
 The view can be anything but what I'm sure is that by default it will be in Svelte which allows us to have reactive and interactive views (just html+js with maybe tailwind).  
 
 These views can also be used to change the data they're attached to, so we can have a date type view which not just shows a nicely formatted date but also allows us to change it with a calendar input. 
 
-Because these views can cascade in both directions (parent nodes can incorporate their children's views, and child nodes can reference their parents' data), we can combine them to create complex interactive interfaces. For example we could also make an interactive view for the "state" typed nodes:  
+Because these views can cascade in both directions (parent nodes can incorporate their children's views, and child nodes can reference their parents' data), we can combine them to create complex interactive interfaces. For example we could also make an interactive view for the `state` typed nodes:  
 `<button on:click={() => {value = value === "Pending" ? "Done" : "Pending"}}>{value === "Pending" ? "⏳" : "✅"}</button>`  
 and then in the task typed node's view we can show both together with the task title.  
 
@@ -104,7 +107,7 @@ These queries can be complicated but it's not harder than an SQL query so most p
 ## Important: Why Graphs and Types Matter
 
 The Todo example has an `<- assigned -> person: John Doe` connection.  
-Imagine that you also have a "Contacts" graph in the document and you list people you know in it with all kinds of details. If you first create this John Doe node in the Todo graph, then he will be suggested in the Contact graph as well or if you have a query there for all the persons, he will be there instantly.  
+Imagine that you also have a `Contacts` graph in the document and you list people you know in it with all kinds of details. If you first create this John Doe node in the Todo graph, then he will be suggested in the Contact graph as well or if you have a query there for all the persons, he will be there instantly.  
 If you already have him in the Contacts graph, then his name will be suggested in the Todo graph as soon as you connect a person typed node to a task.  
 If this person has connection anywhere in the document to anything (company, phone number, spouse, where you met, where they live, etc.) then all of these information will be available wherever the node is used.  
 
