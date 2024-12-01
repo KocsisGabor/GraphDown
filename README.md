@@ -4,7 +4,7 @@
 
 Imagine that no one has invented spreadsheets yet, not even the concept of tabular data is really used. Then someone invents the csv format and makes it easy to edit and process it using an app like Excel. Would it be challenging to describe this to someone? I think it would be, and this is the same challenge I face when I try to describe the idea below.
 
-**tl;dr:** This is a format to store any data in a hierarchical, typed, yet freeform, human-readable, and editable way. The planned accompanying app allows for interactive editing, querying, processing, and visualization.
+**tl;dr:** This is a format to store any data in a hierarchical, typed, human-readable and editable way. The planned accompanying app allows for convenient editing, querying, processing, visualization, and can make the data interactive.
 
 I have a huge document about this idea, what problems it solves, for whom it's useful, what are the use cases and key benefits, etc. But it's too long and too much to digest, so I'll try to skip most of it and focus on the core idea. 
 
