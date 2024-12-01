@@ -25,14 +25,15 @@ I can have any content around or even inside the graph data.
   -- has -> task: Buy cat food
     -- is -> state: Pending
   -- has -> task: Some other task
-	-- due -> date: 2024-12-10
-	<- assigned -> person: John Doe
-	-- is -> state: Done
-	```markdown
-       ## markdown content for the specific task
-	   
-	   It can be any language in fenced code blocks not just markdown. This is how we can assign additional metadata or views to the task for example using TOML or HTML.
-	```
+    -- due -> date: 2024-12-10
+    <- assigned -> person: John Doe
+    -- is -> state: Done
+    ```markdown
+    ## markdown content for the specific task
+   
+    It can be any language in fenced code blocks not just markdown.
+    This is how we can assign additional metadata or views to the task for example using TOML or HTML.
+    ```
 ```
 #### Explanation
 
