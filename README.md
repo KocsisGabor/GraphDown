@@ -44,7 +44,7 @@ The "Todo" in parentheses is a start of a graph, it's essentially a root typed n
 
 "Buy cat food", "Pending" are node IDs, they have to be unique but they can have actual content. So "Buy cat food" is actually just short for @Buy_cat_food = { value: "Buy cat food" }.
 
-Indentation is used to define the hierarchy, so "Buy cat food" is a child of "Todo". 
+Indentation and arrows define the hierarchy. For example, "Buy cat food" is a child of "Todo". Similarly, "John Doe" is assigned to a task, and that task is also linked back to him.
 
 The content in that fenced block is just for that one specific "Some other task" node. It is possible to have all kinds of data, views, and scripts in a similar way not just for each node but for every node in a given type. 
 
@@ -66,9 +66,9 @@ So if we just run `graphdown serve xy.md` it will start a server, will make a db
 
 The client will be a browser based app with so many features I'm not even sure where to start.
 
-First of all, obviously it will have autocomplete features, syntax highlighting, and all kinds of editor features so even though we can use any verb, type, and in general any structure, we don't have to remember what we used before, we can just start typing and it will suggest the rest and actually this suggestion is what makes it somewhat special I think:   
+First of all, obviously it will have autocomplete features, syntax highlighting, and all kinds of editor features so even though we can use any verb, type, and in general any structure, we don't have to remember what we used before, we can just start typing and it will suggest the rest.   
 
-For example, the state typed node with "Pending" value is nothing special, it could be anything, it could be "completed" typed node with "false" value for example. It has no meaning in itself, but because this app will suggest the verbs, types, and nodes we used before in a similar context, the graph can act as a schema. Also, verbs and types together with the connected node types allows us and for AI to infer everything about the data.
+For example, the "state" typed node with "Pending" value is nothing special, it could be anything, it could be "completed" typed node with "false" value for example. It has no meaning in itself, but because this app will suggest the verbs, types, and nodes we used before in a similar context, the graph can act as a schema. Also, verbs and types together with the connected node types allows us and for an LLM to infer everything about the data.
 
 Let's say we add another task with this app to our Todo graph, as soon as we start a new line under Todo, it will suggest "-- has -> task: ", then we can write the name of the task and after new line and tab it will suggest "-- is -> state: Pending" and "-- is -> state: Done" both. Essentially, writing any kind of data once will make it easy to write it again following the same structure, it's like automatic forms.
 
@@ -93,20 +93,21 @@ and then in the task typed node's view we can show both together with the task t
 
 Just like that we have a todo app that's easily customizable and extendable with all kinds of other advantages. 
 
-Obviously the app will have defaults and there will be a marketplace for views, templates, and even whole apps.
+The app will come with default views for certain types, but there will likely be a marketplace for additional views, templates, and even complete 'applications'.
 
 Again, I can't mention everything. For example I said earlier that the language has query syntax: this means that we don't have to use the data in the way we wrote it, we can make queries to get them back in a different way.  
-For example our base markdown file might be a journal type thing where we write an entry for each day and then we insert a task into the todo graph inside these day entries. This means that our Tasks will be all over the place in the file but it doesn't matter because we can just make a new Todo section in the document with a query that shows our whole Todo graph in that place.  
+For example our base markdown file might be a journal type thing where we write an entry for each day and then we insert a task into the todo graph inside these day entries. This means that our Tasks will be all over the place in the file but it doesn't matter because we can just make a new Todo section in the document with a query that shows our whole Todo graph in that place (queries can also have views).  
 Similarly, we can have a "People I'm working with" section where we query for all the person typed nodes to display only their name and the pending tasks assigned to them.  
 These queries can be complicated but it's not harder than an SQL query so most people will be able to write them.
 
 ## Important: Why Graphs and Types Matter
 
 The Todo example has an `<- assigned -> person: John Doe` connection.  
-Imagine that you also have a "Contacts" graph in the document and you list people you know in it with all kinds of details. If you first create this John Doe node in the Todo graph, then he will be suggested in the Contact graph as well or if you have a query there for all the persons, he will be there instantly. If you already have him in the Contacts graph, then his name will be suggested in the Todo graph as soon as you connect a person typed node to a task.  
+Imagine that you also have a "Contacts" graph in the document and you list people you know in it with all kinds of details. If you first create this John Doe node in the Todo graph, then he will be suggested in the Contact graph as well or if you have a query there for all the persons, he will be there instantly.  
+If you already have him in the Contacts graph, then his name will be suggested in the Todo graph as soon as you connect a person typed node to a task.  
 If this person has connection anywhere in the document to anything (company, phone number, spouse, where you met, where they live, etc.) then all of these information will be available wherever the node is used.  
 
-Direction matters, this person will be listed in the Todo graph but the task will be listed in the person's node as well since it's connected to him with the assigned edge. This is the power of graphs. The data is connected in a natural way and it's easy to manage and query it.
+This person will be listed in the Todo graph but the task will be listed in the person's node as well since it's connected to him with the 'assigned' edge. This is the power of graphs. The data is connected in a natural way and it's easy to manage and query it (the connection is bidirectional in this case but that only matters with queries).
 
 ## Conclusion
 
@@ -120,7 +121,7 @@ If the idea is as good as I think it is, then I don't think monetization will be
 
 ## Why Graphs and Types Matter (again)
 
-> This is like 15 pages long in my original idea document so even though I mentioned it above, I also asked Claude to make a summary of it:
+> This section is like 15 pages long in my original idea document so even though I mentioned it above, I also asked Claude to make a summary of it:
 
 At first glance, you might wonder why we need typed graphs when simpler solutions like TOML in markdown could handle basic use cases like todo lists or project tracking. The answer lies in how we actually work with information.
 
@@ -143,14 +144,14 @@ This isn't just a personal productivity issue. In professional settings, the pro
 -   Inventory in an ERP system
 -   Marketing content in various CMS platforms
 -   Multiple language versions of the same content
--   Analytics data from different platforms
+-   Analytics data related to all of the above from different platforms
 
-Connecting these data sources typically requires extensive custom development work - often 100+ hours just to create basic integrations.
+Connecting these data sources typically requires extensive custom development work just to create basic integrations.
 
 GraphDown isn't just another task manager or note-taking tool - it's an attempt to solve the fundamental problem of data fragmentation. By representing information as a typed graph, it can:
 
 -   Maintain natural connections between different types of data
--   Query across these connections to find relevant information
+-   Query across these connections to find every relevant information
 -   Adapt to new types of data without requiring structural changes
 -   Present the same information in different ways for different purposes
 
